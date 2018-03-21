@@ -51,5 +51,44 @@ namespace WebMvc.Controllers
             pessoaList.Add(newPessoa);
             return RedirectToAction(nameof(Index));
         }
+
+        public IActionResult Edit(int? id)
+        {
+            if (!id.HasValue)
+                return NotFound();
+
+            var pessoa = pessoaList
+                .First(p => p.Id == id);
+
+            if(pessoa == null)
+            {
+                return NotFound();
+            }
+
+            return View(pessoa);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(
+            [Bind("Id, Nome")]Pessoa editPessoa
+         )
+        {
+            if (!ModelState.IsValid)
+                return View(editPessoa);
+
+            var pessoaToEdit = pessoaList
+                .FirstOrDefault(p => p.Id == editPessoa.Id);
+
+            if (pessoaToEdit == null)
+                return NotFound();
+
+            pessoaToEdit.Nome = editPessoa.Nome;
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
     }
 }

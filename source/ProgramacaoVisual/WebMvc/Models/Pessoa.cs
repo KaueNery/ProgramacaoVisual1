@@ -4,6 +4,7 @@ namespace WebMvc.Models
     {
         public int Id {get; set;}
 
+        [System.ComponentModel.DataAnnotations.Required]
         public string Nome {get; set;}
     }
 }
